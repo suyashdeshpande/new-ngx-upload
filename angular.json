@@ -121,6 +121,46 @@
           }
         }
       }
+    },
+    "upload": {
+      "root": "projects/upload",
+      "sourceRoot": "projects/upload/src",
+      "projectType": "library",
+      "prefix": "ngx",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/upload/tsconfig.lib.json",
+            "project": "projects/upload/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/upload/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/upload/src/test.ts",
+            "tsConfig": "projects/upload/tsconfig.spec.json",
+            "karmaConfig": "projects/upload/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/upload/tsconfig.lib.json",
+              "projects/upload/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngx-upload"

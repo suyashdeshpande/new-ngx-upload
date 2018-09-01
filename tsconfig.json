@@ -15,6 +15,14 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "upload": [
+        "dist/upload"
+      ],
+      "upload/*": [
+        "dist/upload/*"
+      ]
+    }
   }
 }
