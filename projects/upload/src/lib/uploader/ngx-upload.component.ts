@@ -1,13 +1,21 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {NgxUploadService} from '../ngx-upload.service';
 import {INgxErrorText, INgxText, INgxUploadConfig} from '../interface';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
   selector: 'ngx-upload',
   templateUrl: 'ngx-upload.component.html',
-  styleUrls: ['ngx-upload.component.scss']
+  styleUrls: ['ngx-upload.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => NgxUploadComponent)
+    }
+  ]
 })
-export class NgxUploadComponent implements OnInit, OnDestroy {
+export class NgxUploadComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
 
   constructor(private _service: NgxUploadService) {
@@ -21,6 +29,8 @@ export class NgxUploadComponent implements OnInit, OnDestroy {
   @Input() config: INgxUploadConfig;
   @Input() errorTexts: INgxErrorText;
   @Input() text: INgxText;
+
+  propChange = (_: any) => {}
 
   selectedImages: any;
   hasPreview = false;
@@ -219,6 +229,8 @@ export class NgxUploadComponent implements OnInit, OnDestroy {
     }
     this.onSelect.emit(data);
     this.onSelectEventData = data;
+    this.propChange(this.selectedImages);
+    console.log('seected images ngModel', this.selectedImages);
     // console.log('selected images', this.selectedImages);
     // console.log('on select event', data);
   }
@@ -282,6 +294,24 @@ export class NgxUploadComponent implements OnInit, OnDestroy {
     }
     if (!this.imgSrc.length) {
       this.reset();
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.propChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+  }
+
+  writeValue(obj: any): void {
+    if (Array.isArray(obj)) {
+      this.selectedImages = [...obj];
+    } else {
+      this.selectedImages = {...obj};
     }
   }
 }
