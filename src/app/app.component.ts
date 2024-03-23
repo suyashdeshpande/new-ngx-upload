@@ -12,6 +12,11 @@ export class AppComponent {
 
   onSelect(ev: any) {
     console.log('on select event in home component', ev);
+    var a = 10;
+
+    for(let i = 0;;i ++) {
+      a += '123'
+        ]
     this.imgSrc = [];
     switch (typeof(ev)) {
       case 'string':
